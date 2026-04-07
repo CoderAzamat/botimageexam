@@ -1,0 +1,82 @@
+﻿1. HEAP VA SOH 
+
+XOTIRA NIMA.Dastur ishlayotganda 2 xil joy ishlatadi:
+   STACK   tez, kichik, aniq o'lchamdagi ma'lumotlar int, bool, struct
+  HEAP   katta, dinamik, ob'ektlar uchun joy class instancelar
+
+Heap — bu .net da obektlar yashaydigan xotira.
+new kalit so'zi bilan yaratgan har qanday class obekti Heapga tushadi.
+
+SOH  SMALL OBJECT HEAP NIMA?
+SOH hajmi 85  000 baytdan kichik bo'lgan ob'ektlar yashaydigan joy.
+Odatdagi ob'ektlarning 99% shu yerda turadi.
+
+SOH 3 AVLODGA BO'LINGAN 
+  Gen 0 Yoshlar     Yangi tugilgan obektlar shu yerga tushadi
+
+Garbage Collector eng ko'p shu avlodni tozalaydi
+Tez tozalanadi — chunki aksariyat ob'ektlar qisqa yashaydi
+Misol: sikl ichidagi vaqtinchalik o'zgaruvchilar
+
+  Gen 1 Urtacha Gen 0 dan  qolganlar Gen 1 ga ko'chadi
+ Bufer vazifasini o'taydi
+
+  Gen 2 Kattalari
+Uzoq yashovchi obektlar: static fieldlar, kesh malumotlar
+Kamdan kam tozalanadi  tozalash sekin bo'ladi
+Applicaton ishlayotganda shu gen 2 obyektlari doimiy turadi
+
+NEGA SOH KERAK?
+.NET GC ning aqlli yondashuvi — Kop obekt tez uladi tamoyili.
+  1. Ko'pgina ob'ektlar qisqa umr ko'radi (lokal o'zgaruvchilar, request ob'ektlari
+  2. SOH  Generational GC bu obektlarni tez topadi va tozalaydi
+  3. Butun Heapni tozalash emas
+
+
+SOH vs LOH:
+  • Kichik ob'ekt (< 85 KB)  → SOH → tez tozalanadi 
+  • Katta ob'ekt (≥ 85 KB)   → LOH → sekin, fragmentatsiya 
+  
+
+XULOSA:
+  SOH - dotnet xotira boshqaruvining aqlli qismi
+  U sizning oddiy ob'ektlaringizni samarali boshqaradi,
+  Garbagecolektor  esa siz o'chirishni unutgan ob'ektlarni tozalaydi.
+  Siz xotira bo'shatish haqida o'ylamaysiz — dotbet buni qiladi
+
+
+2. IDisposable NIMA? — QACHON KERAK?
+
+
+muammo:bazi resurslar garbagecolektor tomonidan avtomatik tozalanmaydi:
+  Fayl ochganingiz
+  Malumotlar bazasiga ulanganda
+  tarmoq ulanishi HttpClient
+  Grafik resurslar (Bitmap
+
+
+
+IDisposable bu interfeys obyektni tugri yopish uchun.
+Faqat bitta metodi bor:
+
+
+
+
+
+
+
+3. ref out farqi
+
+
+
+C# da metodga qiymat uzatishda 2 usul bor.    By Value nusxa uzatiladi, asl o'zgarmaydi  .  By Reference ref bn out — asl o'zgaruvchining o'zi uzatiladi
+
+
+
+
+
+
+
+  ref  O'zgaruvchini metodga uzatib, u yerda ham o'zgartirmoqchi bo'lsangiz
+  out   Metoddan bir nechta qiymat qaytarmoqchi bo'lsangiz (TryXxx pattern)
+  in   Katta struct ni nusxalamay faqat o'qish uchun uzatmoqchi bo'lsangiz
